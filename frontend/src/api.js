@@ -1,6 +1,6 @@
 // api.js — all fetch calls to the backend
 
-const BASE = "https://apex-backend-mttn.onrender.com/api";
+const BASE = (import.meta.env.VITE_API_URL || "http://localhost:4000") + "/api";
 
 function getToken() {
   return localStorage.getItem("apex_token");
@@ -16,7 +16,7 @@ async function request(path, options = {}) {
     ...options,
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Request failed");
+  if (!res.ok) throw new Error(`${res.status}: ${data.error || "Request failed"}`);
   return data;
 }
 
