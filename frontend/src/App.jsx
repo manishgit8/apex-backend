@@ -908,7 +908,7 @@ export default function App() {
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
       <aside style={s.sidebar}>
         <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "12px", overflow: "hidden", marginBottom: "16px", background: "#0D1233", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <img src="/apex-logo.png" alt="APEX" style={{ width: "85%", height: "85%", objectFit: "contain", display: "block" }} />
+          <img src="/apex-logo.svg" alt="APEX" style={{ width: "85%", height: "85%", objectFit: "contain", display: "block" }} />
         </div>
 
         {/* Overview Tab */}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1233;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a2150;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5D776;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8C547;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" rx="20" fill="url(#bg)" />
+
+  <!-- Outer ring -->
+  <circle cx="100" cy="100" r="78" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.6" />
+
+  <!-- Triangle / apex shape -->
+  <polygon points="100,30 165,150 35,150" fill="none" stroke="url(#gold)" stroke-width="3" stroke-linejoin="round" filter="url(#glow)" />
+
+  <!-- Inner filled triangle (smaller) -->
+  <polygon points="100,55 148,140 52,140" fill="url(#gold)" opacity="0.15" />
+
+  <!-- Center vertical line (peak) -->
+  <line x1="100" y1="30" x2="100" y2="150" stroke="url(#gold)" stroke-width="1.5" opacity="0.4" />
+
+  <!-- Horizontal crossbar -->
+  <line x1="60" y1="110" x2="140" y2="110" stroke="url(#gold)" stroke-width="1.5" opacity="0.4" />
+
+  <!-- APEX text -->
+  <text x="100" y="175" text-anchor="middle" font-family="'Courier New', monospace" font-size="22" font-weight="900" letter-spacing="8" fill="url(#gold)" filter="url(#glow)">APEX</text>
+
+  <!-- Small dot at peak -->
+  <circle cx="100" cy="30" r="4" fill="url(#gold)" filter="url(#glow)" />
+</svg>
