@@ -3,6 +3,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 a {
@@ -19,4 +20,110 @@ body {
   min-width: 320px;
 }
 
+/* ─── Mobile Hamburger Button (hidden on desktop) ─────────────────── */
+.apex-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  flex-shrink: 0;
+}
 
+/* ─── Sidebar Overlay (hidden on desktop) ────────────────────────── */
+.apex-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 499;
+}
+
+/* ─── Responsive Breakpoint ──────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Sidebar: off-canvas drawer */
+  .apex-sidebar {
+    position: fixed !important;
+    left: -260px !important;
+    top: 0 !important;
+    height: 100dvh !important;
+    z-index: 500 !important;
+    transition: left 0.28s ease !important;
+    overflow-y: auto !important;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.5);
+  }
+  .apex-sidebar--open {
+    left: 0 !important;
+  }
+  .apex-sidebar-overlay {
+    display: block;
+  }
+
+  /* Main: full width, less padding */
+  .apex-main {
+    padding: 14px 14px !important;
+  }
+
+  /* Header: allow wrapping */
+  .apex-header {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .apex-header-actions {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Show hamburger */
+  .apex-menu-btn {
+    display: flex !important;
+  }
+
+  /* Stats row: 2 columns */
+  .apex-stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Content grid: single column */
+  .apex-content-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Overview stat cards: 2 columns */
+  .apex-overview-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Overview top/weak: stack vertically */
+  .apex-overview-top-weak {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Auth screen: center on small screens */
+  .apex-auth-wrap {
+    padding: 16px !important;
+    align-items: flex-start !important;
+  }
+  .apex-auth-card {
+    width: 100% !important;
+    flex-direction: column !important;
+    min-height: unset !important;
+    border-radius: 14px !important;
+  }
+  .apex-auth-features {
+    display: none !important;
+  }
+
+  /* Settings panel */
+  .apex-settings-panel {
+    max-width: 100% !important;
+  }
+}

@@ -56,6 +56,11 @@ async function initDB() {
     )
   `);
 
+  // Add profile_pic column if it doesn't exist (safe migration)
+  await pool.query(`
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_pic TEXT DEFAULT NULL
+  `);
+
   console.log("✅ Database tables ready");
 }
 
@@ -75,10 +80,17 @@ async function getUserByEmail(email) {
 
 async function getUserById(id) {
   const { rows } = await pool.query(
-    "SELECT id, name, email, streak, last_login_date, created_at FROM users WHERE id = $1",
+    "SELECT id, name, email, streak, last_login_date, profile_pic, created_at FROM users WHERE id = $1",
     [id]
   );
   return rows[0] || null;
+}
+
+async function updateProfilePic(userId, profilePic) {
+  await pool.query(
+    "UPDATE users SET profile_pic = $1 WHERE id = $2",
+    [profilePic, userId]
+  );
 }
 
 async function insertUser(name, email, password) {
@@ -238,6 +250,7 @@ module.exports = {
   getUserById,
   insertUser,
   updateStreak,
+  updateProfilePic,
   getSubjectsByUser,
   getConceptsBySubject,
   getConceptById,

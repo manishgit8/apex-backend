@@ -56,11 +56,11 @@ function OverallDashboard({ subjects, conceptsMap, stats, weekly, user }) {
     <div style={{ display:"flex", flexDirection:"column", gap:"18px" }}>
 
       {/* Stat cards */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"12px" }} className="apex-overview-stats">
         {statCards.map((s,i) => (
           <div key={i} style={{ background:"#141414", border:"1px solid rgba(255,255,255,0.06)", borderRadius:"10px", padding:"16px 18px" }}>
             <div style={{ fontSize:"9px", letterSpacing:"2px", color:"rgba(255,255,255,0.3)", marginBottom:"8px" }}>{s.label}</div>
-            <div style={{ fontSize:"26px", fontWeight:700, fontFamily:"monospace", color:s.color }}>{s.value}</div>
+            <div style={{ fontSize:"26px", fontWeight:700, fontFamily:"'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color:s.color }}>{s.value}</div>
           </div>
         ))}
       </div>
@@ -124,7 +124,7 @@ function OverallDashboard({ subjects, conceptsMap, stats, weekly, user }) {
       </div>
 
       {/* Top & Weak concepts side by side */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"12px" }} className="apex-overview-top-weak">
         {[
           { title:"🏆 TOP CONCEPTS",    list: topConcepts,  colorFn: c => masteryColor(c.mastery) },
           { title:"⚠ NEEDS ATTENTION",  list: weakConcepts, colorFn: () => "#FF6B6B" },
@@ -195,7 +195,7 @@ function MiniCalendar() {
 // ─── Settings Panel ─────────────────────────────────────────────────────────
 function SettingsPanel({ user, profilePic, onProfileUpload, onLogout, theme, onThemeChange, accent, onAccentChange, appFont, onFontChange, streakVisible, onStreakToggle }) {
   const [accentColor, setAccentColor] = useState(accent || "#E8C547");
-  const [font, setFont]               = useState(appFont || "DM Mono");
+  const [font, setFont]               = useState(appFont || "Inter");
   const [showStreak, setShowStreak]   = useState(streakVisible !== false);
 
   const saveAccent = (c) => { setAccentColor(c); localStorage.setItem("apex_accent", c); onAccentChange?.(c); };
@@ -235,10 +235,10 @@ function SettingsPanel({ user, profilePic, onProfileUpload, onLogout, theme, onT
     </div>
   );
 
-  const accentOptions = ["#E8C547","#4ECDC4","#818CF8","#FB923C","#4ADE80","#FF6B6B"];
+  const accentOptions = ["#7c3aed","#4ECDC4","#818CF8","#FB923C","#4ADE80","#FF6B6B"];
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", gap:"24px", maxWidth:"680px" }}>
+    <div style={{ display:"flex", flexDirection:"column", gap:"24px", maxWidth:"680px" }} className="apex-settings-panel">
 
       {/* Profile section */}
       <div style={{ background:cardBg, border:cardBdr, borderRadius:"14px", padding:"24px" }}>
@@ -272,11 +272,11 @@ function SettingsPanel({ user, profilePic, onProfileUpload, onLogout, theme, onT
             ))}
           </div>
         )}
-        {row("Font", "Interface monospace font",
+        {row("Font", "Interface font",
           <select value={font} onChange={e => saveFont(e.target.value)} style={{ background:selBg, border:`1px solid ${selBdr}`, borderRadius:"6px", color:selClr, fontSize:"12px", padding:"5px 10px", cursor:"pointer", outline:"none" }}>
-            <option value="DM Mono">DM Mono</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Fira Code">Fira Code</option>
+            <option value="Inter">Inter</option>
+            <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+            <option value="Nunito">Nunito</option>
             <option value="JetBrains Mono">JetBrains Mono</option>
           </select>
         )}
@@ -353,17 +353,17 @@ function AuthScreen({ onAuth }) {
   ];
 
   return (
-    <div style={{ display:"flex", minHeight:"100vh", background:"#f0f2f5", alignItems:"center", justifyContent:"center", fontFamily:"'Segoe UI', sans-serif" }}>
-      <div style={{ display:"flex", width:"900px", minHeight:"560px", background:"#fff", borderRadius:"20px", overflow:"hidden", boxShadow:"0 8px 40px rgba(0,0,0,0.12)" }}>
+    <div style={{ display:"flex", minHeight:"100vh", background:"#f0f2f5", alignItems:"center", justifyContent:"center", fontFamily:"'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }} className="apex-auth-wrap">
+      <div style={{ display:"flex", width:"900px", minHeight:"560px", background:"#fff", borderRadius:"20px", overflow:"hidden", boxShadow:"0 8px 40px rgba(0,0,0,0.12)" }} className="apex-auth-card">
 
         {/* ── Left: Form Panel ── */}
         <div style={{ flex:1, padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"center" }}>
-          <p style={{ color:"#6c47ff", fontWeight:600, fontSize:"13px", marginBottom:"6px", letterSpacing:"0.3px" }}>Academic Mastery</p>
-          <h1 style={{ fontSize:"28px", fontWeight:700, color:"#111", margin:"0 0 6px" }}>
-            {mode === "login" ? "Welcome back" : "Create account"}
+          <p style={{ color:"#7c3aed", fontWeight:700, fontSize:"13px", marginBottom:"8px", letterSpacing:"0.3px" }}>APEX Mastery Tracker</p>
+          <h1 style={{ fontSize:"30px", fontWeight:800, color:"#0f0f0f", margin:"0 0 8px", letterSpacing:"-0.5px", lineHeight:1.2 }}>
+            {mode === "login" ? "Welcome back 👋" : "Create your account"}
           </h1>
-          <p style={{ color:"#888", fontSize:"13.5px", marginBottom:"28px" }}>
-            {mode === "login" ? "Sign in to continue tracking concepts and progress." : "Get started with your mastery journey."}
+          <p style={{ color:"#888", fontSize:"14px", marginBottom:"28px", lineHeight:1.6 }}>
+            {mode === "login" ? "Sign in to continue tracking your concepts and progress." : "Start your mastery journey today — it's free."}
           </p>
 
           {/* Google Button */}
@@ -424,8 +424,8 @@ function AuthScreen({ onAuth }) {
             {error && <div style={{ background:"#fff0f0", border:"1px solid #fcc", borderRadius:"8px", padding:"10px 12px", color:"#c00", fontSize:"13px" }}>{error}</div>}
 
             <button type="submit" disabled={loading}
-              style={{ background:"linear-gradient(135deg,#7c3aed,#6c47ff)", color:"#fff", border:"none", borderRadius:"10px", padding:"13px", fontSize:"15px", fontWeight:700, cursor:loading?"not-allowed":"pointer", marginTop:"4px", opacity:loading?0.7:1 }}>
-              {loading ? "..." : mode === "login" ? "Sign in" : "Create Account"}
+              style={{ background:"linear-gradient(135deg,#7c3aed,#6c47ff)", color:"#fff", border:"none", borderRadius:"50px", padding:"14px", fontSize:"15px", fontWeight:700, cursor:loading?"not-allowed":"pointer", marginTop:"4px", opacity:loading?0.7:1, letterSpacing:"0.3px", boxShadow:"0 4px 20px rgba(108,71,255,0.35)" }}>
+              {loading ? "Please wait..." : mode === "login" ? "Sign in →" : "Create Account →"}
             </button>
           </form>
 
@@ -439,18 +439,18 @@ function AuthScreen({ onAuth }) {
         </div>
 
         {/* ── Right: Feature Panel ── */}
-        <div style={{ width:"420px", background:"linear-gradient(145deg,#7c3aed,#9f5fe8,#b16be0)", padding:"48px 36px", display:"flex", flexDirection:"column", justifyContent:"center" }}>
-          <h2 style={{ color:"#fff", fontSize:"26px", fontWeight:700, lineHeight:1.3, marginBottom:"10px" }}>
-            Reimagine learning with practical AI tools
+        <div style={{ width:"420px", background:"linear-gradient(145deg,#7c3aed,#9f5fe8,#b16be0)", padding:"48px 36px", display:"flex", flexDirection:"column", justifyContent:"center" }} className="apex-auth-features">
+          <h2 style={{ color:"#fff", fontSize:"28px", fontWeight:800, lineHeight:1.3, marginBottom:"12px", letterSpacing:"-0.3px" }}>
+            Track mastery,<br/>level up faster
           </h2>
-          <p style={{ color:"rgba(255,255,255,0.75)", fontSize:"13px", marginBottom:"32px", lineHeight:1.6 }}>
-            Plan lessons, generate activities, and track concept mastery with one streamlined platform.
+          <p style={{ color:"rgba(255,255,255,0.8)", fontSize:"14px", marginBottom:"36px", lineHeight:1.7 }}>
+            Log study sessions, monitor concept mastery, and build streaks — all in one place.
           </p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"10px" }}>
             {features.map(f => (
-              <div key={f.label} style={{ background:"rgba(255,255,255,0.15)", borderRadius:"12px", padding:"14px 10px", display:"flex", flexDirection:"column", alignItems:"flex-start", gap:"8px", backdropFilter:"blur(4px)" }}>
-                <span style={{ fontSize:"18px" }}>{f.icon}</span>
-                <span style={{ color:"#fff", fontSize:"11.5px", fontWeight:500, lineHeight:1.3 }}>{f.label}</span>
+              <div key={f.label} style={{ background:"rgba(255,255,255,0.12)", borderRadius:"14px", padding:"16px 12px", display:"flex", flexDirection:"column", alignItems:"flex-start", gap:"10px", backdropFilter:"blur(8px)", border:"1px solid rgba(255,255,255,0.15)" }}>
+                <span style={{ fontSize:"20px" }}>{f.icon}</span>
+                <span style={{ color:"#fff", fontSize:"11px", fontWeight:600, lineHeight:1.4, letterSpacing:"0.2px" }}>{f.label}</span>
               </div>
             ))}
           </div>
@@ -667,9 +667,11 @@ export default function App() {
   const [modal, setModal]               = useState(null); // "session"|"addSubject"|"addConcept"
   const [profilePic, setProfilePic]       = useState(() => localStorage.getItem("apex_profile_pic") || null);
   const [theme, setTheme]                 = useState(() => localStorage.getItem("apex_theme") || "dark");
-  const [accent, setAccent]               = useState(() => localStorage.getItem("apex_accent") || "#E8C547");
-  const [appFont, setAppFont]             = useState(() => localStorage.getItem("apex_font") || "DM Mono");
+  const [accent, setAccent]               = useState(() => localStorage.getItem("apex_accent") || "#7c3aed");
+  const [appFont, setAppFont]             = useState(() => localStorage.getItem("apex_font") || "Inter");
   const [showStreak, setShowStreak]       = useState(() => localStorage.getItem("apex_show_streak") !== "false");
+  const [sidebarOpen, setSidebarOpen]     = useState(false);
+  const [picPreview, setPicPreview]       = useState(false);
 
   const handleThemeChange  = (t) => { setTheme(t);   localStorage.setItem("apex_theme", t); };
   const handleAccentChange = (c) => { setAccent(c);  localStorage.setItem("apex_accent", c); };
@@ -684,6 +686,8 @@ export default function App() {
       const dataUrl = ev.target.result;
       localStorage.setItem("apex_profile_pic", dataUrl);
       setProfilePic(dataUrl);
+      // Save to database so it syncs across all devices
+      api.updateProfilePic(dataUrl).catch(console.error);
     };
     reader.readAsDataURL(file);
   };
@@ -693,7 +697,15 @@ export default function App() {
     const token = localStorage.getItem("apex_token");
     if (!token) { setLoading(false); return; }
     api.getMe()
-      .then(res => { setUser(res); setAuthed(true); })
+      .then(res => {
+        setUser(res);
+        setAuthed(true);
+        // Load profile pic from DB (cross-device), fallback to localStorage
+        if (res.profile_pic) {
+          setProfilePic(res.profile_pic);
+          localStorage.setItem("apex_profile_pic", res.profile_pic);
+        }
+      })
       .catch(() => localStorage.removeItem("apex_token"))
       .finally(() => setLoading(false));
   }, []);
@@ -736,6 +748,7 @@ export default function App() {
     setActiveSubject(sub);
     setActiveTab("subject");
     setSelectedConcept(null);
+    setSidebarOpen(false);
     await loadConcepts(sub.id);
   }
 
@@ -753,6 +766,11 @@ export default function App() {
   function handleAuth(u) {
     setUser(u);
     setAuthed(true);
+    // Sync profile pic from DB on login
+    if (u.profile_pic) {
+      setProfilePic(u.profile_pic);
+      localStorage.setItem("apex_profile_pic", u.profile_pic);
+    }
   }
 
   function logout() {
@@ -831,14 +849,16 @@ export default function App() {
   });
 
   return (
-    <div style={{ ...s.root, fontFamily: `'${appFont}','Courier New',monospace` }} className={theme === "light" ? "apex-light" : ""}>
+    <div style={{ ...s.root, fontFamily: `'${appFont}', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` }} className={`${theme === "light" ? "apex-light" : ""} apex-layout`}>
       <style>{`
           :root { --apex-accent: ${accent}; }
           [style*="background: #E8C547"] { background: ${accent} !important; }
+          [style*="background: #7c3aed"] { background: ${accent} !important; }
           [style*="color: #E8C547"] { color: ${accent} !important; }
+          [style*="color: #7c3aed"] { color: ${accent} !important; }
           [style*="border: 1px solid rgba(232,197,71"] { border-color: ${accent}80 !important; }
           [style*="box-shadow"][style*="232,197,71"] { box-shadow: 0 0 0 3px ${accent}33 !important; }
-          * { font-family: '${appFont}','Courier New',monospace !important; }
+          * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important; }
         `}</style>
       {theme === "light" && (
         <style>{`
@@ -894,6 +914,18 @@ export default function App() {
         </div>
       )}
 
+      {/* ── Profile Picture Lightbox ───────────────────────────────── */}
+      {picPreview && profilePic && (
+        <div onClick={() => setPicPreview(false)}
+          style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:2000, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", cursor:"zoom-out" }}>
+          <div onClick={e => e.stopPropagation()} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"14px" }}>
+            <img src={profilePic} alt="profile"
+              style={{ width:"200px", height:"200px", borderRadius:"50%", objectFit:"cover", boxShadow:"0 4px 40px rgba(0,0,0,0.7)", border:"3px solid rgba(255,255,255,0.15)" }} />
+            <p style={{ color:"rgba(255,255,255,0.45)", fontSize:"11px", letterSpacing:"1px", margin:0 }}>TAP OUTSIDE TO CLOSE</p>
+          </div>
+        </div>
+      )}
+
       {/* ── Modals ─────────────────────────────────────────────────────── */}
       {modal === "session" && selectedConcept && (
         <SessionModal concept={selectedConcept} onClose={() => setModal(null)} onLogged={handleSessionLogged} />
@@ -906,20 +938,35 @@ export default function App() {
       )}
 
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
-      <aside style={s.sidebar}>
-        <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "12px", overflow: "hidden", marginBottom: "16px", background: "#0D1233", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <img src="/apex-logo.svg" alt="APEX" style={{ width: "85%", height: "85%", objectFit: "contain", display: "block" }} />
+      {sidebarOpen && <div className="apex-sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+      <aside style={s.sidebar} className={`apex-sidebar${sidebarOpen ? " apex-sidebar--open" : ""}`}>
+        <div style={{ width: "150px", height: "150px", borderRadius: "12px", overflow: "hidden", marginBottom: "16px", background: "#0D1233", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>
+          <img src="/apex-logo.svg" alt="APEX" style={{ width: "80%", height: "80%", objectFit: "contain", display: "block" }} />
         </div>
 
-        {/* Overview Tab */}
-        <button onClick={() => { setActiveTab("overview"); setActiveSubject(null); setSelectedConcept(null); }}
-          style={{ display:"flex", alignItems:"center", gap:"8px", width:"100%", padding:"9px 10px", borderRadius:"7px", border:"none", marginBottom:"4px", cursor:"pointer", background: activeTab==="overview" ? `${accent}18` : "transparent", borderLeft: activeTab==="overview" ? `3px solid ${accent}` : "3px solid transparent", color: activeTab==="overview" ? accent : "rgba(255,255,255,0.5)", fontSize:"11px", fontWeight:700, letterSpacing:"1px", textTransform:"uppercase" }}>
-          ◈ Overview
-        </button>
-        <button onClick={() => { setActiveTab("settings"); setActiveSubject(null); setSelectedConcept(null); }}
-          style={{ display:"flex", alignItems:"center", gap:"8px", width:"100%", padding:"9px 10px", borderRadius:"7px", border:"none", marginBottom:"4px", cursor:"pointer", background: activeTab==="settings" ? "rgba(129,140,248,0.1)" : "transparent", borderLeft: activeTab==="settings" ? "3px solid #818CF8" : "3px solid transparent", color: activeTab==="settings" ? "#818CF8" : "rgba(255,255,255,0.5)", fontSize:"11px", fontWeight:700, letterSpacing:"1px", textTransform:"uppercase" }}>
-          <span>⚙</span><span>Settings</span>
-        </button>
+        {/* Nav Tabs */}
+        <div style={{ display:"flex", background:"rgba(255,255,255,0.05)", borderRadius:"12px", padding:"4px", marginBottom:"12px", gap:"4px" }}>
+          {[
+            { id:"overview", icon:"⊞", label:"Overview" },
+            { id:"settings", icon:"⚙", label:"Settings" },
+          ].map(tab => (
+            <button key={tab.id}
+              onClick={() => { setActiveTab(tab.id); setActiveSubject(null); setSelectedConcept(null); setSidebarOpen(false); }}
+              style={{
+                flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+                gap:"5px", padding:"10px 6px", borderRadius:"9px", border:"none", cursor:"pointer",
+                background: activeTab === tab.id ? "#fff" : "transparent",
+                color: activeTab === tab.id ? "#0a0a0a" : "rgba(255,255,255,0.4)",
+                fontWeight: activeTab === tab.id ? 700 : 500,
+                fontSize:"11px", fontFamily:"inherit",
+                boxShadow: activeTab === tab.id ? "0 2px 8px rgba(0,0,0,0.35)" : "none",
+                transition:"all 0.18s ease",
+              }}>
+              <span style={{ fontSize:"16px", lineHeight:1 }}>{tab.icon}</span>
+              <span style={{ letterSpacing:"0.3px" }}>{tab.label}</span>
+            </button>
+          ))}
+        </div>
 
         <div style={s.sidebarDivider} />
         <p style={s.sidebarLabel}>SUBJECTS</p>
@@ -950,7 +997,8 @@ export default function App() {
 
         <div style={{ ...s.sidebarDivider, marginTop: "auto" }} />
         <div style={s.sidebarBottom}>
-          <div style={s.userAvatar}>
+          <div style={{ ...s.userAvatar, cursor: profilePic ? "zoom-in" : "default" }}
+            onClick={() => profilePic && setPicPreview(true)}>
             {profilePic
               ? <img src={profilePic} alt="profile" style={{ width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%" }} />
               : user?.name?.slice(0,2).toUpperCase()
@@ -968,24 +1016,27 @@ export default function App() {
       </aside>
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
-      <main style={s.main}>
-        <header style={s.header}>
-          <div>
-            <h1 style={s.pageTitle}>{activeTab === "settings" ? "Settings" : activeTab === "overview" ? "Overall Performance" : (activeSubject?.name ?? "Dashboard")}</h1>
-            <p style={s.pageDate}>{new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" })}</p>
+      <main style={s.main} className="apex-main">
+        <header style={s.header} className="apex-header">
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <button className="apex-menu-btn" onClick={() => setSidebarOpen(o => !o)}>☰</button>
+            <div>
+              <h1 style={s.pageTitle}>{activeTab === "settings" ? "Settings" : activeTab === "overview" ? "Overall Performance" : (activeSubject?.name ?? "Dashboard")}</h1>
+              <p style={s.pageDate}>{new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" })}</p>
+            </div>
           </div>
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }} className="apex-header-actions">
             {activeTab !== "overview" && activeTab !== "settings" && (
               <>
                 <button style={s.ghostBtn} onClick={() => setModal("addConcept")}>+ Concept</button>
-                <button style={{ ...s.primaryBtn, background: accent, color: accent.toLowerCase() === "#ff6b6b" || accent.toLowerCase() === "#818cf8" ? "#fff" : "#000" }}
+                <button style={{ ...s.primaryBtn, background: accent }}
                   disabled={!selectedConcept}
                   onClick={() => selectedConcept && setModal("session")}>
                   {selectedConcept ? `Study: ${selectedConcept.name}` : "Select a Concept"}
                 </button>
               </>
             )}
-            {/* Profile icon */}
+            {/* Profile icon — tap to preview, change via Settings */}
             <div style={{ position: "relative" }}>
               <input
                 type="file"
@@ -994,14 +1045,14 @@ export default function App() {
                 style={{ display: "none" }}
                 onChange={handleProfileUpload}
               />
-              <label
-                htmlFor="profile-upload"
-                title="Click to change profile picture"
+              <div
+                title="Tap to view · Change in Settings"
+                onClick={() => profilePic ? setPicPreview(true) : document.getElementById("profile-upload").click()}
                 style={{
                   width: "42px", height: "42px", borderRadius: "50%",
                   background: profilePic ? "transparent" : "linear-gradient(135deg,#E8C547,#818CF8)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  cursor: "pointer", flexShrink: 0, overflow: "hidden",
+                  cursor: "zoom-in", flexShrink: 0, overflow: "hidden",
                   border: "2px solid rgba(232,197,71,0.5)",
                   boxShadow: "0 0 0 3px rgba(232,197,71,0.12)",
                   fontSize: "13px", fontWeight: "700", color: "#000",
@@ -1012,7 +1063,7 @@ export default function App() {
                   ? <img src={profilePic} alt="profile" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
                   : (user?.name?.slice(0,2).toUpperCase() || "ME")
                 }
-              </label>
+              </div>
             </div>
           </div>
         </header>
@@ -1043,7 +1094,7 @@ export default function App() {
         ) : (<>
 
         {/* Stats row */}
-        <div style={s.statsRow}>
+        <div style={s.statsRow} className="apex-stats-row">
           {[
             { label: "Total Concepts", value: allConcepts.length },
             { label: "Mastered", value: masteredCount },
@@ -1057,7 +1108,7 @@ export default function App() {
           ))}
         </div>
 
-        <div style={s.contentGrid}>
+        <div style={s.contentGrid} className="apex-content-grid">
           {/* Concepts panel */}
           <div style={s.conceptsPanel}>
             <div style={s.panelHeader}>
@@ -1159,10 +1210,10 @@ export default function App() {
                       stroke={masteryColor(selectedConcept.mastery)} strokeWidth="8"
                       strokeDasharray={`${(selectedConcept.mastery / 100) * 314} 314`}
                       strokeLinecap="round" transform="rotate(-90 60 60)" />
-                    <text x="60" y="55" textAnchor="middle" fill="white" fontSize="22" fontWeight="700" fontFamily="monospace">
+                    <text x="60" y="55" textAnchor="middle" fill="white" fontSize="22" fontWeight="700" fontFamily="Inter, sans-serif">
                       {selectedConcept.mastery}
                     </text>
-                    <text x="60" y="72" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="10" fontFamily="monospace">
+                    <text x="60" y="72" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="10" fontFamily="Inter, sans-serif">
                       MASTERY
                     </text>
                   </svg>
@@ -1220,94 +1271,94 @@ export default function App() {
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const s = {
-  root: { display: "flex", minHeight: "100vh", background: "#0A0A0A", fontFamily: "'DM Mono','Courier New',monospace", color: "#E8E8E8", position: "relative" },
-  grain: { position: "fixed", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`, pointerEvents: "none", zIndex: 999 },
+  root: { display: "flex", minHeight: "100vh", background: "#0A0A0A", fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#E8E8E8", position: "relative" },
+  grain: { position: "fixed", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E")`, pointerEvents: "none", zIndex: 999 },
 
   // Auth
-  authRoot: { display: "flex", minHeight: "100vh", background: "#0A0A0A", fontFamily: "'DM Mono','Courier New',monospace", color: "#E8E8E8", alignItems: "center", justifyContent: "center", position: "relative" },
-  authCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "40px", width: "360px" },
+  authRoot: { display: "flex", minHeight: "100vh", background: "#0A0A0A", fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", color: "#E8E8E8", alignItems: "center", justifyContent: "center", position: "relative" },
+  authCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px", padding: "40px", width: "360px" },
   authLogo: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" },
   authSubtitle: { fontSize: "10px", letterSpacing: "3px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginTop: 0, marginBottom: "24px" },
-  authTabs: { display: "flex", gap: "4px", background: "rgba(255,255,255,0.04)", borderRadius: "8px", padding: "4px", marginBottom: "20px" },
-  authTab: { flex: 1, padding: "8px", border: "none", borderRadius: "6px", background: "transparent", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: "12px", letterSpacing: "1px", textTransform: "uppercase" },
+  authTabs: { display: "flex", gap: "4px", background: "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "4px", marginBottom: "20px" },
+  authTab: { flex: 1, padding: "8px", border: "none", borderRadius: "7px", background: "transparent", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: "13px", fontWeight: "500" },
   authTabActive: { background: "rgba(255,255,255,0.08)", color: "#fff" },
   authForm: { display: "flex", flexDirection: "column", gap: "14px" },
-  authError: { background: "#200D0D", color: "#FF6B6B", padding: "10px 12px", borderRadius: "6px", fontSize: "12px", border: "1px solid rgba(255,107,107,0.2)" },
+  authError: { background: "#200D0D", color: "#FF6B6B", padding: "10px 14px", borderRadius: "10px", fontSize: "13px", border: "1px solid rgba(255,107,107,0.2)" },
 
   // Inputs
   inputGroup: { display: "flex", flexDirection: "column", gap: "6px" },
-  label: { fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" },
-  input: { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "6px", padding: "10px 12px", color: "#fff", fontSize: "13px", fontFamily: "inherit", outline: "none" },
+  label: { fontSize: "12px", fontWeight: "600", color: "rgba(255,255,255,0.5)", letterSpacing: "0.3px" },
+  input: { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", padding: "11px 14px", color: "#fff", fontSize: "14px", fontFamily: "inherit", outline: "none" },
 
   // Buttons
-  primaryBtn: { display: "flex", alignItems: "center", gap: "8px", background: "#E8C547", color: "#000", border: "none", padding: "10px 18px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontWeight: "700", letterSpacing: "0.5px", fontFamily: "inherit", whiteSpace: "nowrap" },
-  ghostBtn: { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", padding: "10px 16px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontFamily: "inherit", letterSpacing: "0.5px" },
-  scorePill: { padding: "4px 10px", borderRadius: "20px", fontSize: "13px", fontWeight: "700", minWidth: "44px", textAlign: "center" },
+  primaryBtn: { display: "flex", alignItems: "center", gap: "8px", background: "#7c3aed", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "50px", cursor: "pointer", fontSize: "13px", fontWeight: "600", fontFamily: "inherit", whiteSpace: "nowrap", boxShadow: "0 2px 12px rgba(124,58,237,0.35)" },
+  ghostBtn: { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", padding: "10px 18px", borderRadius: "50px", cursor: "pointer", fontSize: "13px", fontFamily: "inherit", fontWeight: "500" },
+  scorePill: { padding: "4px 12px", borderRadius: "20px", fontSize: "13px", fontWeight: "700", minWidth: "48px", textAlign: "center" },
 
   // Modal
-  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" },
-  modal: { background: "#141414", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "28px", width: "400px", maxWidth: "90vw" },
-  modalHeader: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px" },
-  modalTitle: { fontSize: "16px", fontWeight: "700", color: "#fff" },
-  modalSub: { fontSize: "11px", color: "rgba(255,255,255,0.35)", marginTop: "3px" },
-  closeBtn: { background: "rgba(255,255,255,0.06)", border: "none", color: "rgba(255,255,255,0.4)", width: "28px", height: "28px", borderRadius: "50%", cursor: "pointer", fontSize: "11px" },
+  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.72)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" },
+  modal: { background: "#161616", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px", padding: "30px", width: "420px", maxWidth: "92vw" },
+  modalHeader: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "22px" },
+  modalTitle: { fontSize: "18px", fontWeight: "700", color: "#fff", letterSpacing: "-0.3px" },
+  modalSub: { fontSize: "12px", color: "rgba(255,255,255,0.35)", marginTop: "4px" },
+  closeBtn: { background: "rgba(255,255,255,0.07)", border: "none", color: "rgba(255,255,255,0.5)", width: "30px", height: "30px", borderRadius: "50%", cursor: "pointer", fontSize: "12px", display: "flex", alignItems: "center", justifyContent: "center" },
 
   // Sidebar
-  sidebar: { width: "240px", minHeight: "100vh", background: "#0F0F0F", borderRight: "1px solid rgba(255,255,255,0.06)", padding: "24px 14px", display: "flex", flexDirection: "column", gap: "2px", flexShrink: 0 },
+  sidebar: { width: "252px", minHeight: "100vh", background: "#0D0D0D", borderRight: "1px solid rgba(255,255,255,0.06)", padding: "22px 14px", display: "flex", flexDirection: "column", gap: "2px", flexShrink: 0 },
   logo: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px" },
-  logoText: { fontSize: "18px", fontWeight: "700", letterSpacing: "4px", color: "#fff" },
+  logoText: { fontSize: "17px", fontWeight: "800", letterSpacing: "3px", color: "#fff" },
   logoSub: { fontSize: "9px", letterSpacing: "3px", color: "rgba(255,255,255,0.2)", textTransform: "uppercase", margin: "0 0 16px 30px" },
   sidebarDivider: { height: "1px", background: "rgba(255,255,255,0.06)", margin: "10px 0" },
-  sidebarLabel: { fontSize: "9px", letterSpacing: "3px", color: "rgba(255,255,255,0.2)", textTransform: "uppercase", padding: "0 10px", marginBottom: "4px" },
+  sidebarLabel: { fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: "rgba(255,255,255,0.22)", textTransform: "uppercase", padding: "0 10px", marginBottom: "6px" },
   subjectBtn: { display: "flex", alignItems: "center", gap: "10px", background: "transparent", border: "none", borderLeft: "3px solid transparent", color: "#E8E8E8", padding: "9px 10px", borderRadius: "4px", cursor: "pointer", width: "100%", textAlign: "left" },
-  subjectName: { fontSize: "12px", fontWeight: "600", letterSpacing: "0.3px" },
-  subjectCount: { fontSize: "10px", color: "rgba(255,255,255,0.3)", marginTop: "1px" },
-  addSubjectBtn: { background: "transparent", border: "1px dashed rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.3)", padding: "8px", borderRadius: "6px", cursor: "pointer", fontSize: "11px", letterSpacing: "1px", width: "100%", marginTop: "6px", fontFamily: "inherit" },
-  sidebarBottom: { display: "flex", alignItems: "center", gap: "8px", padding: "10px", borderRadius: "8px", background: "rgba(255,255,255,0.04)" },
-  userAvatar: { width: "30px", height: "30px", borderRadius: "50%", background: "linear-gradient(135deg,#E8C547,#4ECDC4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: "700", color: "#000", flexShrink: 0 },
-  userName: { fontSize: "11px", fontWeight: "600", color: "#fff" },
-  userStreak: { fontSize: "10px", color: "rgba(255,255,255,0.35)", marginTop: "1px" },
+  subjectName: { fontSize: "13px", fontWeight: "600" },
+  subjectCount: { fontSize: "11px", color: "rgba(255,255,255,0.3)", marginTop: "1px" },
+  addSubjectBtn: { background: "transparent", border: "1px dashed rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.3)", padding: "9px", borderRadius: "8px", cursor: "pointer", fontSize: "12px", fontWeight: "500", width: "100%", marginTop: "6px", fontFamily: "inherit" },
+  sidebarBottom: { display: "flex", alignItems: "center", gap: "10px", padding: "10px 12px", borderRadius: "10px", background: "rgba(255,255,255,0.04)" },
+  userAvatar: { width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#4ECDC4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: "700", color: "#fff", flexShrink: 0 },
+  userName: { fontSize: "13px", fontWeight: "600", color: "#fff" },
+  userStreak: { fontSize: "11px", color: "rgba(255,255,255,0.35)", marginTop: "1px" },
   logoutBtn: { background: "transparent", border: "none", color: "rgba(255,255,255,0.3)", cursor: "pointer", fontSize: "16px", padding: "4px" },
 
   // Main
-  main: { flex: 1, padding: "28px 30px", overflow: "auto" },
-  header: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "24px" },
-  pageTitle: { fontSize: "24px", fontWeight: "700", letterSpacing: "-0.5px", margin: 0, color: "#fff" },
-  pageDate: { fontSize: "11px", color: "rgba(255,255,255,0.3)", letterSpacing: "1px", marginTop: "4px" },
+  main: { flex: 1, padding: "30px 34px", overflow: "auto" },
+  header: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "28px" },
+  pageTitle: { fontSize: "28px", fontWeight: "800", letterSpacing: "-0.7px", margin: 0, color: "#fff", lineHeight: 1.2 },
+  pageDate: { fontSize: "12px", color: "rgba(255,255,255,0.35)", fontWeight: "400", marginTop: "5px" },
 
-  statsRow: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" },
-  statCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "10px", padding: "16px 18px" },
-  statLabel: { fontSize: "10px", color: "rgba(255,255,255,0.35)", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" },
-  statValue: { fontSize: "26px", fontWeight: "700", color: "#fff", letterSpacing: "-1px" },
+  statsRow: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "22px" },
+  statCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "14px", padding: "18px 20px", boxShadow: "0 2px 12px rgba(0,0,0,0.2)" },
+  statLabel: { fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.35)", letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "10px" },
+  statValue: { fontSize: "28px", fontWeight: "700", color: "#fff", letterSpacing: "-1px", fontFamily: "'JetBrains Mono','Courier New',monospace" },
 
-  contentGrid: { display: "grid", gridTemplateColumns: "1fr 270px", gap: "14px" },
-  conceptsPanel: { background: "#141414", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "18px", display: "flex", flexDirection: "column", gap: "10px" },
+  contentGrid: { display: "grid", gridTemplateColumns: "1fr 280px", gap: "16px" },
+  conceptsPanel: { background: "#141414", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", padding: "20px", display: "flex", flexDirection: "column", gap: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.2)" },
   panelHeader: { display: "flex", alignItems: "center", justifyContent: "space-between" },
-  panelTitle: { fontSize: "11px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.6)" },
-  emptyState: { textAlign: "center", padding: "40px 20px", color: "rgba(255,255,255,0.3)", fontSize: "13px" },
+  panelTitle: { fontSize: "12px", fontWeight: "700", letterSpacing: "1.5px", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" },
+  emptyState: { textAlign: "center", padding: "44px 20px", color: "rgba(255,255,255,0.25)", fontSize: "14px" },
 
-  conceptCard: { background: "#0F0F0F", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "13px 15px", cursor: "pointer" },
-  conceptCardActive: { border: "1px solid rgba(232,197,71,0.3)", background: "#141008" },
-  conceptTop: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" },
-  conceptName: { fontSize: "13px", fontWeight: "600", color: "#fff" },
-  statusBadge: { display: "flex", alignItems: "center", padding: "3px 8px", borderRadius: "20px", fontSize: "10px", fontWeight: "600", letterSpacing: "0.5px" },
-  masteryRow: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "7px" },
-  masteryBar: { flex: 1, height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", overflow: "hidden" },
-  masteryFill: { height: "100%", borderRadius: "2px" },
-  masteryPct: { fontSize: "11px", color: "rgba(255,255,255,0.4)", minWidth: "28px", textAlign: "right" },
-  conceptMeta: { display: "flex", gap: "12px" },
-  metaItem: { fontSize: "10px", color: "rgba(255,255,255,0.3)" },
+  conceptCard: { background: "#0F0F0F", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "14px 16px", cursor: "pointer", transition: "border-color 0.15s" },
+  conceptCardActive: { border: "1px solid rgba(124,58,237,0.4)", background: "#120e1e" },
+  conceptTop: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" },
+  conceptName: { fontSize: "14px", fontWeight: "600", color: "#fff" },
+  statusBadge: { display: "flex", alignItems: "center", padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "600" },
+  masteryRow: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" },
+  masteryBar: { flex: 1, height: "5px", background: "rgba(255,255,255,0.07)", borderRadius: "3px", overflow: "hidden" },
+  masteryFill: { height: "100%", borderRadius: "3px" },
+  masteryPct: { fontSize: "12px", fontWeight: "600", color: "rgba(255,255,255,0.45)", minWidth: "32px", textAlign: "right" },
+  conceptMeta: { display: "flex", gap: "14px" },
+  metaItem: { fontSize: "11px", color: "rgba(255,255,255,0.3)", fontWeight: "400" },
 
-  rightPanel: { display: "flex", flexDirection: "column", gap: "12px" },
-  chartCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "18px" },
-  chart: { display: "flex", gap: "5px", height: "90px", alignItems: "flex-end", marginTop: "12px" },
+  rightPanel: { display: "flex", flexDirection: "column", gap: "14px" },
+  chartCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", padding: "20px", boxShadow: "0 2px 12px rgba(0,0,0,0.2)" },
+  chart: { display: "flex", gap: "5px", height: "90px", alignItems: "flex-end", marginTop: "14px" },
   chartCol: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "5px" },
   chartBarWrap: { flex: 1, width: "100%", display: "flex", alignItems: "flex-end" },
-  chartBar: { width: "100%", borderRadius: "3px 3px 0 0", minHeight: "4px" },
-  chartLabel: { fontSize: "9px", color: "rgba(255,255,255,0.25)" },
+  chartBar: { width: "100%", borderRadius: "4px 4px 0 0", minHeight: "4px" },
+  chartLabel: { fontSize: "10px", color: "rgba(255,255,255,0.25)", fontWeight: "500" },
 
-  detailCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "18px", flex: 1 },
-  detailTitle: { fontSize: "15px", fontWeight: "700", color: "#fff" },
-  detailSub: { fontSize: "10px", color: "rgba(255,255,255,0.3)", letterSpacing: "1px", marginTop: "2px" },
-  detailStatRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" },
+  detailCard: { background: "#141414", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", padding: "20px", flex: 1, boxShadow: "0 2px 12px rgba(0,0,0,0.2)" },
+  detailTitle: { fontSize: "16px", fontWeight: "700", color: "#fff", letterSpacing: "-0.3px" },
+  detailSub: { fontSize: "11px", fontWeight: "500", color: "rgba(255,255,255,0.3)", marginTop: "3px" },
+  detailStatRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" },
 };

@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { getUserByEmail, getUserById, insertUser, updateStreak } = require("../db/database");
+const { getUserByEmail, getUserById, insertUser, updateStreak, updateProfilePic } = require("../db/database");
 const { authMiddleware, signToken } = require("../middleware/auth");
 
 const router = express.Router();
@@ -73,6 +73,19 @@ router.get("/me", authMiddleware, async (req, res) => {
     const user = await getUserById(req.userId);
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// PUT /api/auth/profile-pic
+router.put("/profile-pic", authMiddleware, async (req, res) => {
+  try {
+    const { profile_pic } = req.body;
+    if (!profile_pic) return res.status(400).json({ error: "profile_pic is required" });
+    await updateProfilePic(req.userId, profile_pic);
+    res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

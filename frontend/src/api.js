@@ -29,6 +29,9 @@ export const login = (email, password) =>
 
 export const getMe = () => request("/auth/me");
 
+export const updateProfilePic = (profile_pic) =>
+  request("/auth/profile-pic", { method: "PUT", body: JSON.stringify({ profile_pic }) });
+
 // ─── Subjects ─────────────────────────────────────────────────────────────────
 export const getSubjects = () => request("/subjects");
 export const getConcepts = (subjectId) => request(`/subjects/${subjectId}/concepts`);
