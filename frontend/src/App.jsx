@@ -683,11 +683,22 @@ export default function App() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      const dataUrl = ev.target.result;
-      localStorage.setItem("apex_profile_pic", dataUrl);
-      setProfilePic(dataUrl);
-      // Save to database so it syncs across all devices
-      api.updateProfilePic(dataUrl).catch(console.error);
+      // Compress image to max 256x256 to avoid localStorage quota issues
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 256;
+        const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+        const w = Math.round(img.width * scale);
+        const h = Math.round(img.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        try { localStorage.setItem("apex_profile_pic", dataUrl); } catch (_) {}
+        setProfilePic(dataUrl);
+        api.updateProfilePic(dataUrl).catch(console.error);
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   };
