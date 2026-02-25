@@ -1,9 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { getUserByEmail, getUserById, insertUser, updateStreak, updateProfilePic } = require("../db/database");
+const { OAuth2Client } = require("google-auth-library");
+const { getUserByEmail, getUserById, insertUser, upsertGoogleUser, updateStreak, updateProfilePic } = require("../db/database");
 const { authMiddleware, signToken } = require("../middleware/auth");
 
 const router = express.Router();
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
@@ -89,6 +91,49 @@ router.put("/profile-pic", authMiddleware, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/auth/google
+router.post("/google", async (req, res) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ error: "credential is required" });
+
+    // Verify the ID token issued by Google
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const { name, email, picture } = ticket.getPayload();
+
+    const userRow = await upsertGoogleUser(name, email, picture);
+
+    // Streak logic (same as /login)
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+    const full = await getUserById(userRow.id);
+    const lastLogin = full ? full.last_login_date : null;
+    let newStreak = (full && full.streak) ? full.streak : 0;
+
+    if (lastLogin === todayStr) {
+      // already logged today
+    } else if (lastLogin) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,"0")}-${String(yesterday.getDate()).padStart(2,"0")}`;
+      newStreak = lastLogin === yStr ? newStreak + 1 : 1;
+    } else {
+      newStreak = 1;
+    }
+    await updateStreak(newStreak, todayStr, userRow.id);
+
+    const token = signToken({ id: userRow.id });
+    const updatedUser = await getUserById(userRow.id);
+    res.json({ token, user: updatedUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Google authentication failed" });
   }
 });
 

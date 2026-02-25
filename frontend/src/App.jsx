@@ -1,5 +1,6 @@
 // App.jsx — APEX Mastery Tracker (full backend-connected version)
 import { useState, useEffect, useCallback } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import * as api from "./api";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -321,6 +322,20 @@ function AuthScreen({ onAuth }) {
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
 
+  async function handleGoogleSuccess(credentialResponse) {
+    setError(""); setLoading(true);
+    try {
+      const result = await api.googleLogin(credentialResponse.credential);
+      localStorage.setItem("apex_token", result.token);
+      const me = await api.getMe();
+      onAuth(me);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError(""); setLoading(true);
@@ -367,10 +382,17 @@ function AuthScreen({ onAuth }) {
           </p>
 
           {/* Google Button */}
-          <button style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", border:"1.5px solid #e0e0e0", borderRadius:"10px", padding:"11px", background:"#fff", cursor:"pointer", fontSize:"14px", fontWeight:500, color:"#333", marginBottom:"20px" }}>
-            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.1 0 5.7 1.1 7.7 2.9l5.7-5.7C33.9 3.5 29.3 1.5 24 1.5 14.8 1.5 7 7.4 3.7 15.5l6.7 5.2C12.1 14 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.1-4.5 6.7l7 5.4c4.1-3.8 6.5-9.4 6.5-16.1z"/><path fill="#FBBC05" d="M10.4 28.3A14.6 14.6 0 0 1 9.5 24c0-1.5.3-2.9.7-4.3l-6.7-5.2A22.5 22.5 0 0 0 1.5 24c0 3.6.9 7 2.4 10l6.5-5.7z"/><path fill="#34A853" d="M24 46.5c5.3 0 9.8-1.8 13.1-4.8l-7-5.4c-1.8 1.2-4.1 1.9-6.1 1.9-6.4 0-11.9-4.5-13.8-10.5l-6.5 5.7C7 40.6 14.8 46.5 24 46.5z"/></svg>
-            Continue with Google
-          </button>
+          <div style={{ marginBottom:"20px" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError("Google sign-in failed. Please try again.")}
+              width="100%"
+              text="continue_with"
+              shape="rectangular"
+              theme="outline"
+              size="large"
+            />
+          </div>
 
           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"20px" }}>
             <div style={{ flex:1, height:"1px", background:"#e8e8e8" }} />

@@ -29,6 +29,9 @@ export const login = (email, password) =>
 
 export const getMe = () => request("/auth/me");
 
+export const googleLogin = (credential) =>
+  request("/auth/google", { method: "POST", body: JSON.stringify({ credential }) });
+
 export const updateProfilePic = (profile_pic) =>
   request("/auth/profile-pic", { method: "PUT", body: JSON.stringify({ profile_pic }) });
 

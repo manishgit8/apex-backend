@@ -61,6 +61,11 @@ async function initDB() {
     ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_pic TEXT DEFAULT NULL
   `);
 
+  // Allow Google-only users (no password)
+  await pool.query(`
+    ALTER TABLE users ALTER COLUMN password DROP NOT NULL
+  `).catch(() => {}); // ignore if already nullable
+
   console.log("✅ Database tables ready");
 }
 
@@ -97,6 +102,23 @@ async function insertUser(name, email, password) {
   const { rows } = await pool.query(
     "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id",
     [name, email, password]
+  );
+  return rows[0];
+}
+
+async function upsertGoogleUser(name, email, profilePic) {
+  const existing = await getUserByEmail(email);
+  if (existing) {
+    // Update name/pic in case they changed
+    await pool.query(
+      "UPDATE users SET name = $1, profile_pic = COALESCE($2, profile_pic) WHERE id = $3",
+      [name, profilePic, existing.id]
+    );
+    return existing;
+  }
+  const { rows } = await pool.query(
+    "INSERT INTO users (name, email, profile_pic) VALUES ($1, $2, $3) RETURNING id",
+    [name, email, profilePic]
   );
   return rows[0];
 }
@@ -249,6 +271,7 @@ module.exports = {
   getUserByEmail,
   getUserById,
   insertUser,
+  upsertGoogleUser,
   updateStreak,
   updateProfilePic,
   getSubjectsByUser,

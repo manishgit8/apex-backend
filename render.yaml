@@ -18,3 +18,5 @@ services:
         value: production
       - key: PORT
         value: 4000
+      - key: GOOGLE_CLIENT_ID
+        value: 708631090264-c0fchbcjcbphkngbqf5vn1qmekrrpfo9.apps.googleusercontent.com
